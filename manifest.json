@@ -1,0 +1,20 @@
+{
+	"manifest_version": 2,
+	"name": "Paycom - Timesheet",
+	"version": "0.1",
+	"browser_action": {
+
+	},
+	"background": {
+		"scripts": ["background.js"]
+	},
+	"content_scripts": [
+		{
+			"matches": [
+				"https://www.paycomonline.net/*"
+			],
+			"js": ["jquery-3.1.1.min.js", "moment.js", "my-script.js"]
+		}
+	],
+	"permissions": ["activeTab"]
+}
