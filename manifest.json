@@ -3,7 +3,8 @@
 	"name": "Paycom - Timesheet",
 	"version": "0.1",
 	"browser_action": {
-
+		"default_title": "Paycom Login",
+		"default_popup": "popup.html"
 	},
 	"background": {
 		"scripts": ["background.js"]
@@ -13,8 +14,11 @@
 			"matches": [
 				"https://www.paycomonline.net/*"
 			],
-			"js": ["jquery-3.1.1.min.js", "moment.js", "my-script.js"]
+			"js": ["jquery-3.1.1.min.js", "moment.js", "my-script.js", "login-form.js"]
 		}
 	],
-	"permissions": ["activeTab"]
+	"permissions": [
+		"activeTab",
+		"storage"
+	]
 }

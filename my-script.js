@@ -2,24 +2,34 @@
 var url = window.location.href;
 console.log("url: ", url);
 // Paycom URL's for login and timesheet
+
 var login_url = "https://www.paycomonline.net/v4/ee/ee-login.php";
 var menu_url = "https://www.paycomonline.net/v4/ee/ee-menu.php";
 var timesheet_url = "https://www.paycomonline.net/v4/ee/ee-tawebclock.php?clockid=SALES"
 
-// User Information
-var my_username = "";
-var my_password = "";
-var my_pin = "";
+
 
 var firstLogin = localStorage.getItem("firstLogin") || false;
 // If the browser is open to the login url
 if(url === login_url) {
-	// Fill in login form with user data
-	$("#txtlogin").val(my_username);
-	$("#txtpass").val(my_password);
-	$("#userpinid").val(my_pin);
-	// Submit form
-	$("#btnSubmit").click();	
+
+	// User Information
+	var loginInfo = {};
+	chrome.storage.sync.get(["loginInfo"], function(result) {
+		loginInfo = JSON.parse(result.loginInfo);
+		var my_username = loginInfo.userID;
+		var my_password = loginInfo.userPass;
+		var my_pin = loginInfo.userPin;
+
+		// Fill in login form with user data
+		$("#txtlogin").val(my_username);
+		$("#txtpass").val(my_password);
+		$("#userpinid").val(my_pin);
+		// Submit form
+		$("#btnSubmit").click();	
+	});
+
+	
 } 
 
 // If the browser is open to the timesheet URL
