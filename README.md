@@ -8,7 +8,7 @@
 4. Click "Load unpacked extensions" and select the downloaded zip file
 5. Ensure extension is enabled
 6. Extension should now appear in chrome tool bar
-7.Click on Paycom extension icon in tool bar
+7. Click on Paycom extension icon in tool bar
 8. Click "Update Login Info" and add in login details
 
 ###To login: 
@@ -25,6 +25,7 @@
 1. 15 minute interval needs to be updated to reflect paycom settings
 2. Add in total time worked in the current week
 3. Take into account multiple signins/outs per day
+4. Publish extension to chrome store
 
 ###Collaboration:
 
