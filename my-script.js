@@ -5,7 +5,7 @@ console.log("url: ", url);
 
 var login_url = "https://www.paycomonline.net/v4/ee/ee-login.php";
 var menu_url = "https://www.paycomonline.net/v4/ee/ee-menu.php";
-var timesheet_url = "https://www.paycomonline.net/v4/ee/ee-tawebclock.php?clockid=SALES"
+var timesheet_url = "https://www.paycomonline.net/v4/ee/ee-tawebclock.php?clockid="
 
 
 
