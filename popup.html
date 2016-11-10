@@ -1,28 +1,69 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<link rel="stylesheet" href="bootstrap.min.css"/>
 		<style>
 			
 			#infoPage {
 				display: none;
 			}
+
+			html, body {
+				/*height: 300px;*/
+				width: 350px;
+			}
+			.header {
+				background-color: grey;
+				text-align: center;
+				margin-bottom: 15px;
+			}
+			.header h1 {
+				padding: 5px;
+				margin: 0px;
+				color: white;
+			}
+			#submitBtn {
+				width: 100%;
+			}
+
 		</style>
 	</head>
 	<body>
-		<div id="btnPage">
-			<button id="loginBtn">Login</button>
-			<button id="updateInfo">Update Login Info</button>
+		<div class="header">
+			<h1>Paycomm Login</h1>
 		</div>
-		<div id="infoPage">	
-			<form id="loginInfo">
-				<label for="userId">User Name</label>
-				<input type="text" name="userId"/>
-				<label for="userPass">Password</label>
-				<input type="password" name="userPass"/>
-				<label for="userPin">Pin</label>
-				<input type="password" name="userPin"/>
-				<input type="submit" value="submit"/>
-			</form>
+		<div class="container">
+			<div class="row" id="btnPage">
+				<div class="col-md-8 col-md-offset-2">
+					<button class="btn btn-success" id="loginBtn">Login</button>
+					<button class="btn btn-primary" id="updateInfo">Update Login Info</button>
+					<button class="btn btn-warning" id="repoBtn">Source Code</button>
+				</div>
+			</div>
+			
+			<hr/>
+
+			<div class="row" id="infoPage">	
+				<div class="col-md-8 col-md-offset-2">
+					<form id="loginInfo">
+						<div class="form-group">
+							<label for="userId">User Name</label>
+							<input class="form-control" type="text" name="userId"/>
+						</div>
+						<div class="form-group">
+							<label for="userPass">Password</label>
+							<input class="form-control" type="password" name="userPass"/>
+						</div>
+						<div class="form-group">
+							<label for="userPin">Pin</label>
+							<input class="form-control" type="password" name="userPin"/>
+						</div>
+						<div class="form-group">
+							<input type="submit" class="btn btn-lrg btn-success" id="submitBtn" value="submit"/>
+						</div>
+					</form>
+				</div>
+			</div>
 		</div>
 		<script src="jquery-3.1.1.min.js"></script>
 		<script src="login-form.js"></script>
