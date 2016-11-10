@@ -34,6 +34,7 @@ $("#loginInfo").submit(function(e) {
 	chrome.storage.sync.get(["loginInfo"], function(result) {
 		loginInfo = result.loginInfo;
 	});
+	$("#infoPage").append("<div>")
 	$("#infoPage").hide();
 });
 
