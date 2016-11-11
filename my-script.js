@@ -87,3 +87,47 @@ function timeInterval(time) {
 	var nextInterval = interval > 7 ? 15 - interval + 8 : 7 - interval 
 	return {closerInterval, nextInterval};
 }
+function roundedTimeIn(timeIn) {
+	var hours = moment(timeIn,"HH:mm").format("hh");
+	var minutes = moment(timeIn,"HH:mm").minutes();
+	var baseMins = Math.floor(minutes/15)*15;
+	var interval = minutes%15;
+  //console.log("minutes:" + minutes +",type: " + typeof minutes);
+  //console.log("interval: " + interval + ",  baseMins: " + baseMins   );
+	if(interval <= 5) {
+		minutes = baseMins;
+	} else {
+		minutes = baseMins + 15;
+	}
+  console.log("minutes:" + minutes +",type: " + typeof minutes);
+
+	var roundedTimeIn = (moment(hours, "hh").add(minutes, "minutes")).format("HH:mm a");
+	return roundedTimeIn;
+}
+function rounedCurrTime(currTime) {
+	var hours = moment(currTime,"HH:mm").format("hh");
+	var minutes = moment(currTime,"HH:mm").minutes();
+	var baseMins = Math.floor(minutes/15)*15;
+	var interval = minutes%15;
+  //console.log("minutes:" + minutes +",type: " + typeof minutes);
+  //console.log("interval: " + interval + ",  baseMins: " + baseMins   );
+	if(interval <= 10) {
+		minutes = baseMins;
+	} else {
+		minutes = baseMins + 15;
+	}
+  console.log("minutes:" + minutes +",type: " + typeof minutes);
+
+	var roundedTimeIn = (moment(hours, "hh").add(minutes, "minutes")).format("HH:mm a");
+	return roundedTimeIn;
+}
+function timeWorked(timeIn) {
+	var now = moment().format("hh:mm a");
+	var timeWorked = now.diff(timeIn).format("HH:mm");
+	return timeWorked
+}
+function timeWorked(timeIn) {
+	var now = moment("5:41 PM", "hh:mm a");
+	var timeWorked = moment.utc(now.diff(moment(timeIn,"hh:mm a"))).format("HH:mm");
+	return rounedCurrTime(timeWorked)
+}
