@@ -42,92 +42,62 @@ if(url.includes(timesheet_url)) {
 	}
 	updateTime();
 
-	
-
-
 }
 function updateTime() {
 	// Get todaay's sign in time
 	var timeIn = $(".timeClockTable:first-child .float-right").text();
 	// Get current time
-	var currTime = getTime();
-	// Determine the number of hours worked
-	var diff = moment.utc(moment(currTime,"HH:mm a").diff(moment(timeIn,"HH:mm a"))).format("HH:mm");
-	var minutes = moment.utc(moment(currTime,"HH:mm a").diff(moment(timeIn,"HH:mm a"))).format("mm")
-	// console.log("time in: " + timeIn + ", curr time: " + currTime+", diff: " + diff	);
+	var currTime = moment().format("hh:mm A");
+	
 	//Add in time worked to be underneath the clock
 
-	var interval = timeInterval(minutes);
-	var roundedTime = moment(diff, "HH").add(interval.closerInterval, "minutes").format("HH:mm");
-	console.log("hour: " + moment(diff, "HH") + ", minutes: " + moment((interval.closerInterval).toString(), "mm") + ", interval: " + interval.closerInterval);
-	var updatedClock = '<div class="customClock formGroup centerText" >Total Time Worked:' + diff +'</div><\
+	var interval = nextInterval(currTime);
+	var realTime = realTimeWorked(timeIn, currTime);
+	var roundedTime = roundedTimeWorked(timeIn, currTime);
+
+	var updatedClock = '<div class="customClock formGroup centerText" >Total Time Worked:' + realTime +'</div><\
 						<div class="customClock formGroup centerText" >Rounded Time Worked: '+ roundedTime +'</div>\
-						<div class="customClock formGroup centerText" >Time to next 15 Min Interval: '+ interval.nextInterval +'</div>';
+						<div class="customClock formGroup centerText" >Time to next 15 Min Interval: '+ interval +' minutes</div>';
 	$("#mywebclock").parent().append(updatedClock);
 
 	var style = { color: "black", fontSize: "25px" };
 	$(".customClock").css(style);
 }
-// Get Current time in Hours: Minutes AM/PM Format
-function getTime() {
-	var date = new Date();
-	var hours = date.getHours();
-	var minutes = date.getMinutes();
-	var ampm = hours >= 12 ? 'pm' : 'am';
-	hours = hours % 12;
-	hours = hours ? hours : 12; // the hour '0' should be '12'
-	minutes = minutes < 10 ? '0'+minutes : minutes;
-	var strTime = hours + ':' + minutes + ' ' + ampm;
-	return strTime;
-}
 
-function timeInterval(time) {
-	var interval = time%15;
-	var closerInterval = interval > 7 ? time - interval + 15 : time - interval;
-	var nextInterval = interval > 7 ? 15 - interval + 8 : 7 - interval 
-	return {closerInterval, nextInterval};
-}
-function roundedTimeIn(timeIn) {
-	var hours = moment(timeIn,"HH:mm").format("hh");
-	var minutes = moment(timeIn,"HH:mm").minutes();
+function roundedTime(time) {
+	var hours = moment(time,"hh:mm A").format("HH");
+	var minutes = moment(time,"hh:mm A").minutes();
 	var baseMins = Math.floor(minutes/15)*15;
 	var interval = minutes%15;
-  //console.log("minutes:" + minutes +",type: " + typeof minutes);
-  //console.log("interval: " + interval + ",  baseMins: " + baseMins   );
+
 	if(interval <= 5) {
 		minutes = baseMins;
 	} else {
 		minutes = baseMins + 15;
 	}
-  console.log("minutes:" + minutes +",type: " + typeof minutes);
-
-	var roundedTimeIn = (moment(hours, "hh").add(minutes, "minutes")).format("HH:mm a");
+	var roundedTimeIn = (moment(hours, "HH").add(minutes, "minutes")).format("hh:mm A");
 	return roundedTimeIn;
 }
-function rounedCurrTime(currTime) {
-	var hours = moment(currTime,"HH:mm").format("hh");
-	var minutes = moment(currTime,"HH:mm").minutes();
-	var baseMins = Math.floor(minutes/15)*15;
-	var interval = minutes%15;
-  //console.log("minutes:" + minutes +",type: " + typeof minutes);
-  //console.log("interval: " + interval + ",  baseMins: " + baseMins   );
-	if(interval <= 10) {
-		minutes = baseMins;
-	} else {
-		minutes = baseMins + 15;
-	}
-  console.log("minutes:" + minutes +",type: " + typeof minutes);
 
-	var roundedTimeIn = (moment(hours, "hh").add(minutes, "minutes")).format("HH:mm a");
-	return roundedTimeIn;
+
+function realTimeWorked(timeIn, timeOut) {
+	var realIn = moment(timeIn, "hh:mm A");
+	var realOut = moment(timeOut, "hh:mm A");
+	var timeWorked = moment.utc(moment(timeOut, "hh:mm A").diff(moment(timeIn,"hh:mm A"))).format("hh:mm");
+	console.log("real time worked: " + timeWorked);
+	return timeWorked;
 }
-function timeWorked(timeIn) {
-	var now = moment().format("hh:mm a");
-	var timeWorked = now.diff(timeIn).format("HH:mm");
-	return timeWorked
+function roundedTimeWorked(timeIn, timeOut) {
+	var roundedIn = roundedTime(timeIn);
+	var roundedOut = roundedTime(timeOut);
+	var roundedTimeWorked = moment.utc(moment(roundedOut, "hh:mm").diff(moment(roundedIn,"hh:mm"))).format("hh:mm");
+	console.log("rounded time worked: " + roundedTimeWorked);
+	return roundedTimeWorked;
+} 
+
+function nextInterval(time) {
+	var minutes = 15 - moment(time,"hh:mm A").minutes() % 15;
+	console.log("next interval: " + minutes);
+	return minutes
 }
-function timeWorked(timeIn) {
-	var now = moment("5:41 PM", "hh:mm a");
-	var timeWorked = moment.utc(now.diff(moment(timeIn,"hh:mm a"))).format("HH:mm");
-	return rounedCurrTime(timeWorked)
-}
+
