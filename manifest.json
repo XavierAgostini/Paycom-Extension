@@ -14,7 +14,7 @@
 			"matches": [
 				"https://www.paycomonline.net/*"
 			],
-			"js": ["jquery-3.1.1.min.js", "moment.js", "my-script.js", "login-form.js"]
+			"js": ["jquery-3.1.1.min.js", "moment.js", "timeClock.js", "login-form.js"]
 		}
 	],
 	"permissions": [
