@@ -22,10 +22,9 @@
 
 ###Future Updates:
 
-1. 15 minute interval needs to be updated to reflect paycom settings
-2. Add in total time worked in the current week
-3. Take into account multiple signins/outs per day
-4. Publish extension to chrome store
+1. Add in total time worked in the current week
+2. Take into account multiple signins/outs per day
+3. Publish extension to chrome store
 
 ###Collaboration:
 
