@@ -55,12 +55,12 @@ function updateTime() {
 	var realTime = realTimeWorked(timeIn, currTime);
 	var roundedTime = roundedTimeWorked(timeIn, currTime);
 
-	var updatedClock = '<div class="customClock formGroup centerText" >Total Time Worked:' + realTime +'</div><\
+	var updatedClock = '<div class="customClock formGroup centerText" >Total Time Worked:' + realTime +'</div>\
 						<div class="customClock formGroup centerText" >Rounded Time Worked: '+ roundedTime +'</div>\
-						<div class="customClock formGroup centerText" >Time to next 15 Min Interval: '+ interval +' minutes</div>';
+						<div class="customClock formGroup centerText" >Next 15 Min Interval: '+ interval +' minutes</div>';
 	$("#mywebclock").parent().append(updatedClock);
 
-	var style = { color: "black", fontSize: "25px" };
+	var style = { color: "black", fontSize: "20px" };
 	$(".customClock").css(style);
 }
 
@@ -75,22 +75,20 @@ function roundedTime(time) {
 	} else {
 		minutes = baseMins + 15;
 	}
-	var roundedTimeIn = (moment(hours, "HH").add(minutes, "minutes")).format("hh:mm A");
-	return roundedTimeIn;
+	var roundedTime = (moment(hours, "HH").add(minutes, "minutes")).format("hh:mm A");
+	return roundedTime;
 }
 
 
 function realTimeWorked(timeIn, timeOut) {
-	var realIn = moment(timeIn, "hh:mm A");
-	var realOut = moment(timeOut, "hh:mm A");
-	var timeWorked = moment.utc(moment(timeOut, "hh:mm A").diff(moment(timeIn,"hh:mm A"))).format("hh:mm");
+	var timeWorked = moment.utc(moment(timeOut, "hh:mm A").diff(moment(timeIn,"hh:mm A"))).format("HH:mm");
 	console.log("real time worked: " + timeWorked);
 	return timeWorked;
 }
 function roundedTimeWorked(timeIn, timeOut) {
-	var roundedIn = roundedTime(timeIn);
-	var roundedOut = roundedTime(timeOut);
-	var roundedTimeWorked = moment.utc(moment(roundedOut, "hh:mm").diff(moment(roundedIn,"hh:mm"))).format("hh:mm");
+	var realIn = roundedTime(timeIn);
+	var realOut = roundedTime(timeOut)
+	var roundedTimeWorked = moment.utc(moment(realOut, "hh:mm A").diff(moment(realIn,"hh:mm A"))).format("HH:mm");
 	console.log("rounded time worked: " + roundedTimeWorked);
 	return roundedTimeWorked;
 } 
@@ -100,4 +98,3 @@ function nextInterval(time) {
 	console.log("next interval: " + minutes);
 	return minutes
 }
-
