@@ -4,3 +4,4 @@
 // 		localStorage.setItem({"firstLogin": true});
 // 	}
 // });
+chrome.browserAction.setIcon({path:"icons/favicon.ico"});
