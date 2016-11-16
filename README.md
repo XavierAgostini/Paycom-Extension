@@ -39,9 +39,3 @@
 
 1. Please suggest improvements and any bugs
 2. Make pull requests for any changes you have made
-
-###Screenshots:
-
-
-
-
