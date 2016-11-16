@@ -18,6 +18,7 @@
 ###Features:
 
 1. Autologin to paycom
+2. Login details are encrypted, you can change the salt message in login-form.js and timeClock.js 
 2. On paycom webclock page new clock added in to show time worked that day and time to next 15 minute interval
 
 ###Future Updates:
