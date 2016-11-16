@@ -1,6 +1,9 @@
 // Load in stored login details
 updateInfo();
 
+// encryption salt
+var my_salt = "salty";
+
 // Open up paycom login page
 $("#loginBtn").click(function() {
 	chrome.tabs.update({url: "https://www.paycomonline.net/v4/ee/ee-login.php"});
@@ -29,12 +32,15 @@ $("#loginInfo").submit(function(e) {
 		userPass: $('input[name="userPass"]').val(),
 		userPin: $('input[name="userPin"]').val()
 	};
-	chrome.storage.sync.set( {"loginInfo": JSON.stringify(loginDetails)}, function() {});
-	var loginInfo = {} ;
-	chrome.storage.sync.get(["loginInfo"], function(result) {
-		loginInfo = result.loginInfo;
-	});
-	$("#infoPage").append("<div>")
+	var encryptedDetails =  CryptoJS.AES.encrypt(JSON.stringify(loginDetails), my_salt);
+	chrome.storage.sync.set( {"loginInfo": encryptedDetails}, function() {});
+	// var loginInfo = {} ;
+	// chrome.storage.sync.get(["loginInfo"], function(result) {
+	// 	loginInfo = CryptoJS.AES.decrypt(result.loginInfo, "test");
+	// 	console.log("info now: ");
+	// 	console.log(loginInfo);
+	// });
+	// $("#infoPage").append("<div>")
 	$("#infoPage").hide();
 });
 
@@ -44,7 +50,7 @@ function updateInfo() {
 	var loginInfo = {} ;
 	chrome.storage.sync.get(["loginInfo"], function(result) {
 		if(result.loginInfo) {
-			loginInfo = JSON.parse(result.loginInfo);
+			loginInfo = JSON.parse(CryptoJS.AES.decrypt(result.loginInfo, my_salt).toString(CryptoJS.enc.Utf8));
 			var my_username = loginInfo.userID;
 			var my_password = loginInfo.userPass;
 			var my_pin = loginInfo.userPin;

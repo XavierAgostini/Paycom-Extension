@@ -1,13 +1,14 @@
 // Get the current browser url
 var url = window.location.href;
-console.log("url: ", url);
+// console.log("url: ", url);
 // Paycom URL's for login and timesheet
 
 var login_url = "https://www.paycomonline.net/v4/ee/ee-login.php";
 var menu_url = "https://www.paycomonline.net/v4/ee/ee-menu.php";
 var timesheet_url = "https://www.paycomonline.net/v4/ee/ee-tawebclock.php?clockid="
 
-
+// encryption salt
+var my_salt = "salty";
 
 var firstLogin = localStorage.getItem("firstLogin") || false;
 // If the browser is open to the login url
@@ -16,7 +17,8 @@ if(url === login_url) {
 	// User Information
 	var loginInfo = {};
 	chrome.storage.sync.get(["loginInfo"], function(result) {
-		loginInfo = JSON.parse(result.loginInfo);
+
+		loginInfo = JSON.parse(CryptoJS.AES.decrypt(result.loginInfo, my_salt).toString(CryptoJS.enc.Utf8));//JSON.parse(result.loginInfo);
 		var my_username = loginInfo.userID;
 		var my_password = loginInfo.userPass;
 		var my_pin = loginInfo.userPin;
