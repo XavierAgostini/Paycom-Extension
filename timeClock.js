@@ -100,3 +100,7 @@ function nextInterval(time) {
 	console.log("next interval: " + minutes);
 	return minutes
 }
+
+function devClock() {
+	//new stuff
+}
