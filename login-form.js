@@ -31,13 +31,6 @@ $("#settingsBtn").click(function() {
 	}
 	
 });
-function updateTime() {
-	setInterval(function() {
-		var now = moment().format("hh:mm a");
-		$("#clock").text(now);
-	}, 1000);
-	
-}
 
 // Redirect to github repository
 $("#repoBtn").click(function() {
@@ -82,3 +75,54 @@ function updateInfo() {
 
 	});	
 }
+
+function dummy() {
+	chrome.storage.sync.get(["loginStatus"], function(result) {
+		if(result.loginStatus) {
+			var loginStatus = result.loginStatus;
+			if(loginStatus.signedIn) {
+				//update status to loged in
+				updateTime(loginStatus.timeIn);
+				//tell clock to start counting
+				$("#status").text("In");
+			} else {
+				//update to status to loged off
+				$("#status").text("Out");
+				//kill clock
+				clearInterval(window.myTimer);
+			}
+		}
+	});
+}
+
+function updateTime(timeIn) {
+	window.myTimer = setInterval(function() {
+		var time = roundedTimeWorked(roundedTime(timeIn), roundedTime(moment(.format("hh:mm a"))));
+		$("#clock").text(time);
+	}, 1000);
+}
+
+
+/* Clock funciontality */
+function roundedTime(time) {
+	var hours = moment(time,"hh:mm A").format("HH");
+	var minutes = moment(time,"hh:mm A").minutes();
+	var baseMins = Math.floor(minutes/15)*15;
+	var interval = minutes%15;
+
+	if(interval <= 5) {
+		minutes = baseMins;
+	} else {
+		minutes = baseMins + 15;
+	}
+	var roundedTime = (moment(hours, "HH").add(minutes, "minutes")).format("hh:mm A");
+	return roundedTime;
+}
+
+function roundedTimeWorked(timeIn, timeOut) {
+	var realIn = roundedTime(timeIn);
+	var realOut = roundedTime(timeOut)
+	var roundedTimeWorked = moment.utc(moment(realOut, "hh:mm A").diff(moment(realIn,"hh:mm A"))).format("HH:mm");
+	console.log("rounded time worked: " + roundedTimeWorked);
+	return roundedTimeWorked;
+} 

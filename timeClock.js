@@ -29,10 +29,26 @@ if(url === login_url) {
 		$("#userpinid").val(my_pin);
 		// Submit form
 		$("#btnSubmit").click();	
-	});
-
-	
+	});	
 } 
+
+$("#cmdpunchid").on("click", function() {
+    var loginStatus = {
+    	signedIn: true,
+    	timeIn: moment().format("hh:mm a"),
+    	timeout: ""
+    };
+	chrome.storage.sync.set( {"loginStatus": loginStatus}, function() {});
+});
+$("#cmdpunchod").on("click", function() {
+	chrome.storage.sync.get(["loginStatus"], function(result) {
+		var loginStatus = {}
+		loginStatus = result.loginStatus;
+		loginStatus.signedIn = false;
+		loginStatus.timeOut = moment.format("hh:mm a");
+		chrome.storage.sync.set( {"loginStatus": loginStatus}, function() {});
+	});
+});
 
 // If the browser is open to the timesheet URL
 if(url.includes(timesheet_url)) {
