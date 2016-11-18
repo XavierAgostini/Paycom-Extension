@@ -4,8 +4,11 @@
 		<link rel="stylesheet" href="styles/bootstrap.min.css"/>
 		<link rel="icon"  href="icons/icon-16.ico">
 		<style>
-			
+			/* Page Styling */
 			#infoPage {
+				display: none;
+			}
+			#settingsPage {
 				display: none;
 			}
 
@@ -27,6 +30,54 @@
 				width: 100%;
 			}
 
+			/* Box around the slider*/
+			.switch {
+				position: relative;
+				display: inline-block;
+				width: 100px;
+				height: 34px;
+			}
+			/* Hide default HTML checkbox*/
+			.switch input {
+				display: none;
+			}
+
+			/* The slider*/
+			.slider {
+				position: absolute;
+				cursor: pointer;
+				border-radius: 34px;
+				top: 0;
+				left: 0;
+				bottom: 0;
+				right: 0;
+				background-color: #ccc;
+				-webkit-transition: 0.4s;
+				transition: 0.4s;
+			}
+			.slider:before {
+				position: absolute;
+				border-radius: 50%;
+				content: "";
+				height: 26px;
+				width: 26px;
+				left: 4px;
+				bottom: 4px;
+				background-color: white;
+				-webkit-transition: 0.4s;
+				transition: 0.4s;
+			}
+			input:checked + .slider {
+				background-color: #2196F3;
+			}
+			input:focus + .slider {
+				box-shadow: 0 0 1px #2196F3;
+			}
+			input:checked + .slider:before {
+				-webkit-transform: translateX(100px);
+				-ms-transform: translateX(100px);
+				transform: translateX(66px);
+			}
 		</style>
 	</head>
 	<body>
@@ -38,7 +89,7 @@
 				<div class="col-md-8 col-md-offset-2">
 					<button class="btn btn-success" id="loginBtn">Login</button>
 					<button class="btn btn-primary" id="updateInfo">Update Login Info</button>
-					<button class="btn btn-warning" id="repoBtn">Source Code</button>
+					<button class="btn btn-warning" id="settingsBtn">Settings</button>	
 				</div>
 			</div>
 			
@@ -65,8 +116,23 @@
 					</form>
 				</div>
 			</div>
+			<div class="row" id="timePage">
+				<div class="col-md-8 col-md-offset-2">
+					Time: <div id="clock"></div>
+				</div>
+			</div>
+			<div class="row" id="settingsPage">
+				<div class="col-md-8 col-md-offset-2">
+					<span>Autologin</span>
+					<label class="switch">
+						<input type="checkbox">
+						<div class="slider"></div>
+					</label>
+				</div>
+			</div>
 		</div>
 		<script src="src/jquery-3.1.1.min.js"></script>
+		<script src="src/moment.js"></script>
 		<script src="src/aes.js"></script>
 		<script src="src/pbkdf2.js"></script>
 		<script src="login-form.js"></script>

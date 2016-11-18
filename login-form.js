@@ -1,6 +1,8 @@
 // Load in stored login details
 updateInfo();
 
+//start clocl
+updateTime();
 // encryption salt
 var my_salt = "salty";
 
@@ -18,6 +20,24 @@ $("#updateInfo").click(function() {
 		$("#infoPage").hide();
 	}
 });
+
+$("#settingsBtn").click(function() {
+	console.log('w');
+	$(this).toggleClass("active");
+	if($(this).hasClass("active")) {
+		$("#settingsPage").show();
+	} else {
+		$("#settingsPage").hide();
+	}
+	
+});
+function updateTime() {
+	setInterval(function() {
+		var now = moment().format("hh:mm a");
+		$("#clock").text(now);
+	}, 1000);
+	
+}
 
 // Redirect to github repository
 $("#repoBtn").click(function() {
