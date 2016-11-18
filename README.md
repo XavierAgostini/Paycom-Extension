@@ -34,6 +34,7 @@
 1. Add in total time worked in the current week
 2. Take into account multiple signins/outs per day
 3. Publish extension to chrome store
+4. Add in clock directly to the extension instead of having to constantly login to paycom and editing page
 
 ###Collaboration:
 
