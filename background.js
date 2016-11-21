@@ -5,3 +5,4 @@
 // 	}
 // });
 chrome.browserAction.setIcon({path:"icons/favicon.ico"});
+

@@ -1,8 +1,9 @@
 // Load in stored login details
 updateInfo();
 
-//start clocl
-updateTime();
+//start clock
+var loginStatus = {};
+var myTimer;
 // encryption salt
 var my_salt = "salty";
 
@@ -13,6 +14,9 @@ $("#loginBtn").click(function() {
 
 // Open login details form
 $("#updateInfo").click(function() {
+	console.log("signedIn")
+	dummySignIn();
+
 	$(this).toggleClass("active");
 	if($(this).hasClass("active")) {
 		$("#infoPage").show();
@@ -22,6 +26,9 @@ $("#updateInfo").click(function() {
 });
 
 $("#settingsBtn").click(function() {
+	console.log("signed out");
+	dummySignOut();
+	
 	console.log('w');
 	$(this).toggleClass("active");
 	if($(this).hasClass("active")) {
@@ -79,7 +86,7 @@ function updateInfo() {
 function dummy() {
 	chrome.storage.sync.get(["loginStatus"], function(result) {
 		if(result.loginStatus) {
-			var loginStatus = result.loginStatus;
+			loginStatus = result.loginStatus;
 			if(loginStatus.signedIn) {
 				//update status to loged in
 				updateTime(loginStatus.timeIn);
@@ -94,12 +101,21 @@ function dummy() {
 		}
 	});
 }
-
-function updateTime(timeIn) {
-	window.myTimer = setInterval(function() {
-		var time = roundedTimeWorked(roundedTime(timeIn), roundedTime(moment(.format("hh:mm a"))));
+function dummySignIn() {
+	loginStatus.signedIn = true;
+	loginStatus.timeIn = "8:00 AM";
+	chrome.storage.sync.set( {"loginStatus": loginStatus}, function() {});
+	myTimer = window.setInterval(function() {
+		var time = roundedTimeWorked(roundedTime(loginStatus.timeIn), roundedTime(moment().format("hh:mm a")));
 		$("#clock").text(time);
 	}, 1000);
+}
+
+function dummySignOut() {
+	loginStatus.signedIn = false;
+	loginStatus.timeout = moment().format("hh:mm a");
+	chrome.storage.sync.set( {"loginStatus": loginStatus}, function() {});
+	window.clearInterval(myTimer);
 }
 
 
