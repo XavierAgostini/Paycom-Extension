@@ -17,12 +17,12 @@ $("#updateInfo").click(function() {
 	console.log("signedIn")
 	dummySignIn();
 
-	$(this).toggleClass("active");
-	if($(this).hasClass("active")) {
-		$("#infoPage").show();
-	} else {
-		$("#infoPage").hide();
-	}
+	// $(this).toggleClass("active");
+	// if($(this).hasClass("active")) {
+	// 	$("#infoPage").show();
+	// } else {
+	// 	$("#infoPage").hide();
+	// }
 });
 
 $("#settingsBtn").click(function() {
@@ -32,9 +32,9 @@ $("#settingsBtn").click(function() {
 	console.log('w');
 	$(this).toggleClass("active");
 	if($(this).hasClass("active")) {
-		$("#settingsPage").show();
+		$(".settingsPage").show();
 	} else {
-		$("#settingsPage").hide();
+		$(".settingsPage").hide();
 	}
 	
 });

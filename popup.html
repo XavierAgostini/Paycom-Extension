@@ -8,7 +8,7 @@
 			#infoPage {
 				display: none;
 			}
-			#settingsPage {
+			.settingsPage {
 				display: none;
 			}
 
@@ -36,6 +36,7 @@
 				display: inline-block;
 				width: 100px;
 				height: 34px;
+				float: right;
 			}
 			/* Hide default HTML checkbox*/
 			.switch input {
@@ -51,7 +52,7 @@
 				left: 0;
 				bottom: 0;
 				right: 0;
-				background-color: #ccc;
+				background-color: #5cb85c;
 				-webkit-transition: 0.4s;
 				transition: 0.4s;
 			}
@@ -68,15 +69,23 @@
 				transition: 0.4s;
 			}
 			input:checked + .slider {
-				background-color: #2196F3;
+				background-color: #F44336;
 			}
 			input:focus + .slider {
-				box-shadow: 0 0 1px #2196F3;
+				box-shadow: 0 0 1px #F44336;
 			}
 			input:checked + .slider:before {
 				-webkit-transform: translateX(100px);
 				-ms-transform: translateX(100px);
 				transform: translateX(66px);
+			}
+
+			.settings-label {
+				font-size: 20px;
+				vertical-align: top;
+			}
+			.setting-line {
+				margin-bottom: 12px;
 			}
 		</style>
 	</head>
@@ -95,7 +104,39 @@
 			
 			<hr/>
 
-			<div class="row" id="infoPage">	
+			
+			<div class="row" id="timePage">
+				<div class="col-md-8 col-md-offset-2">
+					Signed <span id="status"></span>
+					Time: <span id="clock"></span>
+				</div>
+			</div>
+			<div class="row settingsPage">
+				<div class="col-md-8 col-md-offset-2">
+					<div class="setting-line">
+						<span class="settings-label">Autologin</span>
+						<label class="switch">
+							<input type="checkbox">
+							<div class="slider"></div>
+						</label>
+					</div>
+					<div class="setting-line">
+						<span class="settings-label">Show Clock</span>
+						<label class="switch">
+							<input type="checkbox">
+							<div class="slider"></div>
+						</label>
+					</div>
+					<div class="setting-line">
+						<span class="settings-label">Alarm</span>
+						<label class="switch">
+							<input type="checkbox">
+							<div class="slider"></div>
+						</label>
+					</div>
+				</div>
+			</div>
+			<div class="row settingsPage">	
 				<div class="col-md-8 col-md-offset-2">
 					<form id="loginInfo">
 						<div class="form-group">
@@ -111,24 +152,9 @@
 							<input class="form-control" type="password" name="userPin"/>
 						</div>
 						<div class="form-group">
-							<input type="submit" class="btn btn-lrg btn-success" id="submitBtn" value="submit"/>
+							<input type="submit" class="btn btn-lrg btn-warning" id="submitBtn" value="Update Login Info"/>
 						</div>
 					</form>
-				</div>
-			</div>
-			<div class="row" id="timePage">
-				<div class="col-md-8 col-md-offset-2">
-					Signed <span id="status"></span>
-					Time: <span id="clock"></span>
-				</div>
-			</div>
-			<div class="row" id="settingsPage">
-				<div class="col-md-8 col-md-offset-2">
-					<span>Autologin</span>
-					<label class="switch">
-						<input type="checkbox">
-						<div class="slider"></div>
-					</label>
 				</div>
 			</div>
 		</div>
