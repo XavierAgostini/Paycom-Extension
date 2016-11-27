@@ -13,30 +13,22 @@ $("#loginBtn").click(function() {
 });
 
 // Open login details form
-$("#updateInfo").click(function() {
-	console.log("signedIn")
-	dummySignIn();
-
-	// $(this).toggleClass("active");
-	// if($(this).hasClass("active")) {
-	// 	$("#infoPage").show();
-	// } else {
-	// 	$("#infoPage").hide();
-	// }
+$("#timeBtn").click(function() {
+	$('.page').hide();
+	$("#settingsBtn").removeClass("active");
+	$(this).toggleClass("active");
+	if($(this).hasClass("active")) {
+		$("#timePage").show();
+	}
 });
 
 $("#settingsBtn").click(function() {
-	console.log("signed out");
-	dummySignOut();
-	
-	console.log('w');
+	$('.page').hide();
+	$("#timeBtn").removeClass("active");
 	$(this).toggleClass("active");
 	if($(this).hasClass("active")) {
-		$(".settingsPage").show();
-	} else {
-		$(".settingsPage").hide();
+		$("#settingsPage").show();
 	}
-	
 });
 
 // Redirect to github repository
@@ -45,7 +37,7 @@ $("#repoBtn").click(function() {
 });
 
 // Store login info on login details form submission
-$("#loginInfo").submit(function(e) {
+$("#loginForm").submit(function(e) {
 	e.preventDefault();
 	var loginDetails = {
 		userID: $('input[name="userId"]').val(),
@@ -61,7 +53,12 @@ $("#loginInfo").submit(function(e) {
 	// 	console.log(loginInfo);
 	// });
 	// $("#infoPage").append("<div>")
-	$("#infoPage").hide();
+	// $("#settingsPage").hide();
+	$("#updateAlert").fadeIn();
+
+	setTimeout(function() {
+		$("#updateAlert").fadeOut(800);
+	}, 500);
 });
 
 // Get stored login info and write it into login details form
