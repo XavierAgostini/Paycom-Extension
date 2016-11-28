@@ -7,6 +7,7 @@ var myTimer;
 // encryption salt
 var my_salt = "salty";
 
+
 // Open up paycom login page
 $("#loginBtn").click(function() {
 	chrome.tabs.update({url: "https://www.paycomonline.net/v4/ee/ee-login.php"});
@@ -61,11 +62,25 @@ $("#loginForm").submit(function(e) {
 	}, 500);
 });
 
+$('input[type="checkbox"]').on('change', function() {
+	var switchStates = {};
+	$('.switch input[type="checkbox').each(function() {
+		var id = "#" + $(this).attr('id');
+		var state = $(this).is(":checked");
+		switchStates[id] = state;
+	});
+	chrome.storage.sync.set( {"appSettings": JSON.stringify(switchStates)}, function() {});
+
+});
 // Get stored login info and write it into login details form
 function updateInfo() {
+	console.log("update");
 	// User Information
-	var loginInfo = {} ;
-	chrome.storage.sync.get(["loginInfo"], function(result) {
+	var loginInfo = {};
+	var appSettings = {};
+	var loginStatus = {};
+	chrome.storage.sync.get(["loginInfo", "loginStatus", "appSettings"], function(result) {
+		// update login info into login info form
 		if(result.loginInfo) {
 			loginInfo = JSON.parse(CryptoJS.AES.decrypt(result.loginInfo, my_salt).toString(CryptoJS.enc.Utf8));
 			var my_username = loginInfo.userID;
@@ -75,9 +90,26 @@ function updateInfo() {
 			$('input[name="userId"]').val(my_username);
 			$('input[name="userPass"]').val(my_password);
 			$('input[name="userPin"]').val(my_pin);
-		} 
+		}
+		// update app settings 
+		if(result.appSettings) {
+			appSettings = JSON.parse(result.appSettings);
+			console.log(appSettings);
+			for(var setting in appSettings)	{
+				$(setting).attr("checked", appSettings[setting]);
+			}
+		}
+		if(results.loginStatus) {
+			loginStatus = results.loginStatus;
+			$("#loginStatus").text(loginStatus.signedIn);
+			$("#timeIn").text(loginStatus.timeIn);
+			$("#timeOut").text(loginStatus.timeOut);
+			$("#exactTime").text();
+			$("#roundedTime").text();
+		}
 
 	});	
+
 }
 
 function dummy() {
@@ -88,10 +120,10 @@ function dummy() {
 				//update status to loged in
 				updateTime(loginStatus.timeIn);
 				//tell clock to start counting
-				$("#status").text("In");
+				$("#loginStatus").text("In");
 			} else {
 				//update to status to loged off
-				$("#status").text("Out");
+				$("#loginStatus").text("Out");
 				//kill clock
 				clearInterval(window.myTimer);
 			}

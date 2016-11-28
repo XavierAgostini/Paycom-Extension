@@ -13,32 +13,43 @@ var my_salt = "salty";
 var firstLogin = localStorage.getItem("firstLogin") || false;
 // If the browser is open to the login url
 if(url === login_url) {
+	
+	chrome.storage.sync.get(["loginInfo", "appSettings"], function(result) {
+		var appSettings = JSON.parse(result.appSettings);
+		var autoLogin = appSettings["#autoLoginSwitch"];
+		if(!autoLogin) {
+			var loginInfo = JSON.parse(CryptoJS.AES.decrypt(result.loginInfo, my_salt).toString(CryptoJS.enc.Utf8));//JSON.parse(result.loginInfo);
+			var my_username = loginInfo.userID;
+			var my_password = loginInfo.userPass;
+			var my_pin = loginInfo.userPin;
 
-	// User Information
-	var loginInfo = {};
-	chrome.storage.sync.get(["loginInfo"], function(result) {
+			// Fill in login form with user data
+			$("#txtlogin").val(my_username);
+			$("#txtpass").val(my_password);
+			$("#userpinid").val(my_pin);
+			// Submit form
+			$("#btnSubmit").click();	
+		}	
 
-		loginInfo = JSON.parse(CryptoJS.AES.decrypt(result.loginInfo, my_salt).toString(CryptoJS.enc.Utf8));//JSON.parse(result.loginInfo);
-		var my_username = loginInfo.userID;
-		var my_password = loginInfo.userPass;
-		var my_pin = loginInfo.userPin;
-
-		// Fill in login form with user data
-		$("#txtlogin").val(my_username);
-		$("#txtpass").val(my_password);
-		$("#userpinid").val(my_pin);
-		// Submit form
-		$("#btnSubmit").click();	
 	});	
-} 
+}
+function sendMesage() {
 
+	var loginStatus = {
+    	signedIn: true,
+    	timeIn: moment().format("hh:mm a"),
+    	timeout: ""
+    };
+	chrome.storage.sync.set( {"loginStatus": JSON.stringify(loginStatus)}, function() {});
+	window.postMessage({type: "FROM_PAGE", text: "SignedIn"}, "*");	
+}
 $("#cmdpunchid").on("click", function() {
     var loginStatus = {
     	signedIn: true,
     	timeIn: moment().format("hh:mm a"),
     	timeout: ""
     };
-	chrome.storage.sync.set( {"loginStatus": loginStatus}, function() {});
+	chrome.storage.sync.set( {"loginStatus": JSON.stringify(loginStatus)}, function() {});
 });
 $("#cmdpunchod").on("click", function() {
 	chrome.storage.sync.get(["loginStatus"], function(result) {
@@ -46,7 +57,7 @@ $("#cmdpunchod").on("click", function() {
 		loginStatus = result.loginStatus;
 		loginStatus.signedIn = false;
 		loginStatus.timeOut = moment.format("hh:mm a");
-		chrome.storage.sync.set( {"loginStatus": loginStatus}, function() {});
+		chrome.storage.sync.set( {"loginStatus": JSON.stringify(loginStatus)}, function() {});
 	});
 });
 

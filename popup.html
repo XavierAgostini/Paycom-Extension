@@ -99,7 +99,7 @@
 				width: 230px;
 			}
 			.timeInfo {
-				
+				font-size: 18px;
 			}
 		</style>
 	</head>
@@ -120,25 +120,36 @@
 			</div>
 			
 			<hr/>
+			<div class="clock">
+				<div class="row">
+					<div class="col-md-8 col-md-offset-2">
+						<div id="timeClock"></div>
+					</div>
+				</div>
+			</div>
 
 			<div id="timePage" class="page">
 				<div class="row">
 					<div class="col-md-8 col-md-offset-2">
 						<div class="timeInfo">
 							<span>Loged </span>
-							<span>Out</span>
+							<span id="loginStatus">Out</span>
 						</div>
 						<div class="timeInfo">
 							<span>Time In: </span>
-							<span>9:45AM</span>
+							<span id="timeIn">9:45AM</span>
+						</div>
+						<div class="timeInfo">
+							<span>Time Out: </span>
+							<span id="timeOut">9:45AM</span>
 						</div>
 						<div class="timeInfo">
 							<span>Time Worked: </span>
-							<span> 5 Hours</span>
+							<span id="exactTime"> 5 Hours</span>
 						</div>
 						<div class="timeInfo">
 							<span>Rounded Time Worked: </span>
-							<span>5 Hours</span>
+							<span id="roundedTime">5 Hours</span>
 						</div>
 					</div>
 				</div>
@@ -150,21 +161,21 @@
 						<div class="setting-line">
 							<span class="settings-label">Autologin</span>
 							<label class="switch">
-								<input type="checkbox">
+								<input type="checkbox" id="autoLoginSwitch">
 								<div class="slider"></div>
 							</label>
 						</div>
 						<div class="setting-line">
 							<span class="settings-label">Show Clock</span>
 							<label class="switch">
-								<input type="checkbox">
+								<input type="checkbox" id="showClockSwitch">
 								<div class="slider"></div>
 							</label>
 						</div>
 						<div class="setting-line">
 							<span class="settings-label">Alarm</span>
 							<label class="switch">
-								<input type="checkbox">
+								<input type="checkbox" id="alarmSwitch">
 								<div class="slider"></div>
 							</label>
 						</div>
@@ -196,10 +207,10 @@
 			</div>
 			
 		</div>
-		<script src="src/jquery-3.1.1.min.js"></script>
-		<script src="src/moment.js"></script>
-		<script src="src/aes.js"></script>
-		<script src="src/pbkdf2.js"></script>
-		<script src="login-form.js"></script>
+		<script src="js/jquery-3.1.1.min.js"></script>
+		<script src="js/moment.js"></script>
+		<script src="js/aes.js"></script>
+		<script src="js/pbkdf2.js"></script>
+		<script src="js/popupLogic.js"></script>
 	</body>
 </html>
