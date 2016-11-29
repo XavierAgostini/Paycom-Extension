@@ -10,7 +10,9 @@ var timesheet_url = "https://www.paycomonline.net/v4/ee/ee-tawebclock.php?clocki
 // encryption salt
 var my_salt = "salty";
 
-var firstLogin = localStorage.getItem("firstLogin") || false;
+var port = chrome.extension.connect({name: "popup"});
+port.postMessage({test: "test"});
+
 // If the browser is open to the login url
 if(url === login_url) {
 	
@@ -29,7 +31,8 @@ if(url === login_url) {
 			$("#userpinid").val(my_pin);
 			// Submit form
 			$("#btnSubmit").click();	
-		}	
+		}
+		sendMesage();	
 
 	});	
 }
@@ -40,8 +43,11 @@ function sendMesage() {
     	timeIn: moment().format("hh:mm a"),
     	timeout: ""
     };
-	chrome.storage.sync.set( {"loginStatus": JSON.stringify(loginStatus)}, function() {});
-	window.postMessage({type: "FROM_PAGE", text: "SignedIn"}, "*");	
+	chrome.storage.sync.set( {"loginStatus": JSON.stringify(loginStatus)}, function() {
+
+	});
+	chrome.runtime.sendMessage({updateStatus: "signedIn"});
+
 }
 $("#cmdpunchid").on("click", function() {
     var loginStatus = {

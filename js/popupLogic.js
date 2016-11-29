@@ -7,6 +7,15 @@ var myTimer;
 // encryption salt
 var my_salt = "salty";
 
+chrome.runtime.onMessage.addListener(
+  function(request) {
+
+    if(request.updateStatus) {
+    	var state = request.updateStatus;
+    	//do something
+    }
+   
+  });
 
 // Open up paycom login page
 $("#loginBtn").click(function() {
@@ -74,7 +83,7 @@ $('input[type="checkbox"]').on('change', function() {
 });
 // Get stored login info and write it into login details form
 function updateInfo() {
-	console.log("update");
+	// console.log("update");
 	// User Information
 	var loginInfo = {};
 	var appSettings = {};
@@ -94,13 +103,13 @@ function updateInfo() {
 		// update app settings 
 		if(result.appSettings) {
 			appSettings = JSON.parse(result.appSettings);
-			console.log(appSettings);
+			// console.log(appSettings);
 			for(var setting in appSettings)	{
 				$(setting).attr("checked", appSettings[setting]);
 			}
 		}
-		if(results.loginStatus) {
-			loginStatus = results.loginStatus;
+		if(result.loginStatus) {
+			loginStatus = result.loginStatus;
 			$("#loginStatus").text(loginStatus.signedIn);
 			$("#timeIn").text(loginStatus.timeIn);
 			$("#timeOut").text(loginStatus.timeOut);
