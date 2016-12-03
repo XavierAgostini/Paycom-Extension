@@ -1,21 +1,21 @@
 // Load in stored login details
 updateInfo();
 
+// Update clock page on popup open
+updateClockPage();
+
 //start clock
 var loginStatus = {};
 var myTimer;
+
+myTimer = window.setInterval(function() {
+		var time = roundedTimeWorked(roundedTime(loginStatus.timeIn), roundedTime(moment().format("hh:mm a")));
+		$("#timeClock").text(time);
+		console.log('t');
+}, 1000);
+
 // encryption salt
 var my_salt = "salty";
-
-chrome.runtime.onMessage.addListener(
-  function(request) {
-
-    if(request.updateStatus) {
-    	var state = request.updateStatus;
-    	//do something
-    }
-   
-  });
 
 // Open up paycom login page
 $("#loginBtn").click(function() {
@@ -56,14 +56,7 @@ $("#loginForm").submit(function(e) {
 	};
 	var encryptedDetails =  CryptoJS.AES.encrypt(JSON.stringify(loginDetails), my_salt);
 	chrome.storage.sync.set( {"loginInfo": encryptedDetails}, function() {});
-	// var loginInfo = {} ;
-	// chrome.storage.sync.get(["loginInfo"], function(result) {
-	// 	loginInfo = CryptoJS.AES.decrypt(result.loginInfo, "test");
-	// 	console.log("info now: ");
-	// 	console.log(loginInfo);
-	// });
-	// $("#infoPage").append("<div>")
-	// $("#settingsPage").hide();
+
 	$("#updateAlert").fadeIn();
 
 	setTimeout(function() {
@@ -121,6 +114,42 @@ function updateInfo() {
 
 }
 
+// Message listener for communication between popup and content script
+chrome.runtime.onMessage.addListener(
+  function(request) {
+    if(request.updateStatus) {
+    	var state = request.updateStatus;
+    	//do something
+    	console.log("state: " + state);
+    	if(state === "signed in") {
+			dummySignIn();
+    	} else if(state === "signed out") {
+			dummySignOut();
+    	}
+    	updateClockPage();
+    }
+   
+ });
+
+function updateClockPage() {
+	chrome.storage.sync.get(["loginStatus"], function(result) {
+		if(result.loginStatus) {
+			loginStatus = JSON.parse(result.loginStatus);
+			console.log(loginStatus);
+			var logedIn = loginStatus.signedIn ? "In" : "Out";
+			var timeIn = loginStatus.timeIn;
+			var timeOut = loginStatus.timeOut == "" ? moment().format("hh:mm A") : loginStatus.timeOut;
+			// console.log(loginStatus);
+			// console.log("time in: " + timeIn + ", time out: " + timeOut);
+			$("#loginStatus").text(logedIn);
+			$("#timeIn").text(timeIn);
+			$("#exactTime").text(realTimeWorked(timeIn, timeOut));
+			$("#roundedTime").text(roundedTimeWorked(timeIn, timeOut));
+		}
+	});
+}
+
+
 function dummy() {
 	chrome.storage.sync.get(["loginStatus"], function(result) {
 		if(result.loginStatus) {
@@ -140,12 +169,14 @@ function dummy() {
 	});
 }
 function dummySignIn() {
-	loginStatus.signedIn = true;
-	loginStatus.timeIn = "8:00 AM";
-	chrome.storage.sync.set( {"loginStatus": loginStatus}, function() {});
+	// loginStatus.signedIn = true;
+	// loginStatus.timeIn = "8:00 AM";
+	// chrome.storage.sync.set( {"loginStatus": loginStatus}, function() {});
+	
 	myTimer = window.setInterval(function() {
 		var time = roundedTimeWorked(roundedTime(loginStatus.timeIn), roundedTime(moment().format("hh:mm a")));
-		$("#clock").text(time);
+		$("#timeClock").text(time);
+		console.log('t');
 	}, 1000);
 }
 
@@ -158,6 +189,13 @@ function dummySignOut() {
 
 
 /* Clock funciontality */
+
+function realTimeWorked(timeIn, timeOut) {
+	var timeWorked = moment.utc(moment(timeOut, "hh:mm A").diff(moment(timeIn,"hh:mm A"))).format("HH:mm");
+	// console.log("real time worked: " + timeWorked);
+	return timeWorked;
+}
+
 function roundedTime(time) {
 	var hours = moment(time,"hh:mm A").format("HH");
 	var minutes = moment(time,"hh:mm A").minutes();
@@ -177,6 +215,6 @@ function roundedTimeWorked(timeIn, timeOut) {
 	var realIn = roundedTime(timeIn);
 	var realOut = roundedTime(timeOut)
 	var roundedTimeWorked = moment.utc(moment(realOut, "hh:mm A").diff(moment(realIn,"hh:mm A"))).format("HH:mm");
-	console.log("rounded time worked: " + roundedTimeWorked);
+	// console.log("rounded time worked: " + roundedTimeWorked);
 	return roundedTimeWorked;
 } 

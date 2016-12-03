@@ -11,7 +11,7 @@ var timesheet_url = "https://www.paycomonline.net/v4/ee/ee-tawebclock.php?clocki
 var my_salt = "salty";
 
 var port = chrome.extension.connect({name: "popup"});
-port.postMessage({test: "test"});
+ // port.postMessage({test: "test"});
 
 // If the browser is open to the login url
 if(url === login_url) {
@@ -32,23 +32,23 @@ if(url === login_url) {
 			// Submit form
 			$("#btnSubmit").click();	
 		}
-		sendMesage();	
+		updateStatus("signed in");	
 
 	});	
 }
-function sendMesage() {
+function updateStatus(status) {
 
-	var loginStatus = {
-    	signedIn: true,
-    	timeIn: moment().format("hh:mm a"),
-    	timeout: ""
-    };
+	var loginStatus = {signedIn: true, timeIn: "9:00 AM", timeOut: ""};
 	chrome.storage.sync.set( {"loginStatus": JSON.stringify(loginStatus)}, function() {
-
+		console.log("update: " + status);
+		
+		chrome.runtime.sendMessage({updateStatus: status});	
 	});
-	chrome.runtime.sendMessage({updateStatus: "signedIn"});
+	
+	
 
 }
+
 $("#cmdpunchid").on("click", function() {
     var loginStatus = {
     	signedIn: true,
