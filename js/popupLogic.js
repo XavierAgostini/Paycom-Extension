@@ -4,18 +4,13 @@ updateInfo();
 // Update clock page on popup open
 updateClockPage();
 
-//start clock
-var loginStatus = {};
-var myTimer;
-
-myTimer = window.setInterval(function() {
-		var time = roundedTimeWorked(roundedTime(loginStatus.timeIn), roundedTime(moment().format("hh:mm a")));
-		$("#timeClock").text(time);
-		console.log('t');
-}, 1000);
-
 // encryption salt
 var my_salt = "salty";
+
+//start clock
+var loginStatus = {};
+
+
 
 // Open up paycom login page
 $("#loginBtn").click(function() {
@@ -70,18 +65,21 @@ $('input[type="checkbox"]').on('change', function() {
 		var id = "#" + $(this).attr('id');
 		var state = $(this).is(":checked");
 		switchStates[id] = state;
+		if(id == "#showClockSwitch") {
+			if(state) $("#clock").hide();
+			else $("#clock").show();
+		}
 	});
 	chrome.storage.sync.set( {"appSettings": JSON.stringify(switchStates)}, function() {});
 
 });
 // Get stored login info and write it into login details form
 function updateInfo() {
-	// console.log("update");
 	// User Information
 	var loginInfo = {};
 	var appSettings = {};
 	var loginStatus = {};
-	chrome.storage.sync.get(["loginInfo", "loginStatus", "appSettings"], function(result) {
+	chrome.storage.sync.get(["loginInfo", "appSettings"], function(result) {
 		// update login info into login info form
 		if(result.loginInfo) {
 			loginInfo = JSON.parse(CryptoJS.AES.decrypt(result.loginInfo, my_salt).toString(CryptoJS.enc.Utf8));
@@ -100,15 +98,14 @@ function updateInfo() {
 			for(var setting in appSettings)	{
 				$(setting).attr("checked", appSettings[setting]);
 			}
+			if(!appSettings["#showClockSwitch"]) {
+				console.log('working');
+				$("#clock").show();
+			} else {
+				$("#clock").hide();
+			}
 		}
-		if(result.loginStatus) {
-			loginStatus = result.loginStatus;
-			$("#loginStatus").text(loginStatus.signedIn);
-			$("#timeIn").text(loginStatus.timeIn);
-			$("#timeOut").text(loginStatus.timeOut);
-			$("#exactTime").text();
-			$("#roundedTime").text();
-		}
+		
 
 	});	
 
@@ -135,56 +132,45 @@ function updateClockPage() {
 	chrome.storage.sync.get(["loginStatus"], function(result) {
 		if(result.loginStatus) {
 			loginStatus = JSON.parse(result.loginStatus);
-			console.log(loginStatus);
+			
 			var logedIn = loginStatus.signedIn ? "In" : "Out";
 			var timeIn = loginStatus.timeIn;
 			var timeOut = loginStatus.timeOut == "" ? moment().format("hh:mm A") : loginStatus.timeOut;
-			// console.log(loginStatus);
-			// console.log("time in: " + timeIn + ", time out: " + timeOut);
+			
+			var roundedTime = roundedTimeWorked(timeIn, timeOut);
+			var realTime = realTimeWorked(timeIn, timeOut);
+			var interval = loginStatus.signedIn ? nextInterval() : "N/A";
+			
+			$("#timeClock").text(roundedTime);
 			$("#loginStatus").text(logedIn);
 			$("#timeIn").text(timeIn);
-			$("#exactTime").text(realTimeWorked(timeIn, timeOut));
-			$("#roundedTime").text(roundedTimeWorked(timeIn, timeOut));
+			$("#exactTime").text(realTime);
+			$("#roundedTime").text(roundedTime);
+			$("#nextInterval").text(interval);
+
+
+			
 		}
 	});
 }
 
 
-function dummy() {
-	chrome.storage.sync.get(["loginStatus"], function(result) {
-		if(result.loginStatus) {
-			loginStatus = result.loginStatus;
-			if(loginStatus.signedIn) {
-				//update status to loged in
-				updateTime(loginStatus.timeIn);
-				//tell clock to start counting
-				$("#loginStatus").text("In");
-			} else {
-				//update to status to loged off
-				$("#loginStatus").text("Out");
-				//kill clock
-				clearInterval(window.myTimer);
-			}
-		}
-	});
-}
 function dummySignIn() {
-	// loginStatus.signedIn = true;
-	// loginStatus.timeIn = "8:00 AM";
-	// chrome.storage.sync.set( {"loginStatus": loginStatus}, function() {});
+
+	loginStatus.signedIn = true;
+	loginStatus.timeIn = "8:00 AM";
+	loginStatus.timeOut = "";
+	chrome.storage.sync.set( {"loginStatus": JSON.stringify(loginStatus)}, function() {});
 	
-	myTimer = window.setInterval(function() {
-		var time = roundedTimeWorked(roundedTime(loginStatus.timeIn), roundedTime(moment().format("hh:mm a")));
-		$("#timeClock").text(time);
-		console.log('t');
-	}, 1000);
+
 }
 
 function dummySignOut() {
 	loginStatus.signedIn = false;
-	loginStatus.timeout = moment().format("hh:mm a");
-	chrome.storage.sync.set( {"loginStatus": loginStatus}, function() {});
-	window.clearInterval(myTimer);
+	loginStatus.timeIn = "8:00 AM";
+	loginStatus.timeOut = moment().format("hh:mm a");
+	chrome.storage.sync.set( {"loginStatus": JSON.stringify(loginStatus)}, function() {});
+
 }
 
 
@@ -192,8 +178,14 @@ function dummySignOut() {
 
 function realTimeWorked(timeIn, timeOut) {
 	var timeWorked = moment.utc(moment(timeOut, "hh:mm A").diff(moment(timeIn,"hh:mm A"))).format("HH:mm");
-	// console.log("real time worked: " + timeWorked);
 	return timeWorked;
+}
+
+function nextInterval() {
+	var minutes = moment().format("hh:mm A").minutes() % 15;
+	var interval = minutes < 5 ? 5 - minutes : 15 - minutes;
+	console.log("next interval: " + minutes);
+	return interval
 }
 
 function roundedTime(time) {
@@ -215,6 +207,5 @@ function roundedTimeWorked(timeIn, timeOut) {
 	var realIn = roundedTime(timeIn);
 	var realOut = roundedTime(timeOut)
 	var roundedTimeWorked = moment.utc(moment(realOut, "hh:mm A").diff(moment(realIn,"hh:mm A"))).format("HH:mm");
-	// console.log("rounded time worked: " + roundedTimeWorked);
 	return roundedTimeWorked;
 } 

@@ -24,7 +24,6 @@ if(url === login_url) {
 			var my_username = loginInfo.userID;
 			var my_password = loginInfo.userPass;
 			var my_pin = loginInfo.userPin;
-
 			// Fill in login form with user data
 			$("#txtlogin").val(my_username);
 			$("#txtpass").val(my_password);
@@ -32,30 +31,23 @@ if(url === login_url) {
 			// Submit form
 			$("#btnSubmit").click();	
 		}
-		updateStatus("signed in");	
+		updateStatus("signed out");	
 
 	});	
 }
+// Send message to popup
 function updateStatus(status) {
-
-	var loginStatus = {signedIn: true, timeIn: "9:00 AM", timeOut: ""};
-	chrome.storage.sync.set( {"loginStatus": JSON.stringify(loginStatus)}, function() {
-		console.log("update: " + status);
-		
-		chrome.runtime.sendMessage({updateStatus: status});	
-	});
-	
-	
-
+	chrome.runtime.sendMessage({updateStatus: status});	
 }
 
 $("#cmdpunchid").on("click", function() {
     var loginStatus = {
     	signedIn: true,
     	timeIn: moment().format("hh:mm a"),
-    	timeout: ""
+    	timeOut: ""
     };
 	chrome.storage.sync.set( {"loginStatus": JSON.stringify(loginStatus)}, function() {});
+	updateStatus("signed in");
 });
 $("#cmdpunchod").on("click", function() {
 	chrome.storage.sync.get(["loginStatus"], function(result) {
@@ -64,6 +56,7 @@ $("#cmdpunchod").on("click", function() {
 		loginStatus.signedIn = false;
 		loginStatus.timeOut = moment.format("hh:mm a");
 		chrome.storage.sync.set( {"loginStatus": JSON.stringify(loginStatus)}, function() {});
+		updateStatus("signed out");
 	});
 });
 
@@ -128,12 +121,9 @@ function roundedTimeWorked(timeIn, timeOut) {
 	return roundedTimeWorked;
 } 
 
-function nextInterval(time) {
-	var minutes = 15 - moment(time,"hh:mm A").minutes() % 15;
+function nextInterval() {
+	var minutes = moment().format("hh:mm A").minutes() % 15;
+	var interval = minutes < 5 ? 5 - minutes : 15 - minutes;
 	console.log("next interval: " + minutes);
-	return minutes
-}
-
-function devClock() {
-	//new stuff
+	return interval
 }
