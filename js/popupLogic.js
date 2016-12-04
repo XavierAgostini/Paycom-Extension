@@ -73,6 +73,10 @@ $('input[type="checkbox"]').on('change', function() {
 	chrome.storage.sync.set( {"appSettings": JSON.stringify(switchStates)}, function() {});
 
 });
+
+$("#sourceCode a").click(function() {
+	chrome.tabs.update({url: "https://github.com/XavierAgostini/Paycom-Extension"});
+});
 // Get stored login info and write it into login details form
 function updateInfo() {
 	// User Information
@@ -105,10 +109,7 @@ function updateInfo() {
 				$("#clock").hide();
 			}
 		}
-		
-
 	});	
-
 }
 
 // Message listener for communication between popup and content script

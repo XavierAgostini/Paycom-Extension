@@ -76,7 +76,9 @@ input:checked + .slider:before {
 	-ms-transform: translateX(100px);
 	transform: translateX(66px);
 }
-
+#sourceCode {
+	text-align: center;
+}
 .settings-label {
 	font-size: 20px;
 	vertical-align: top;
