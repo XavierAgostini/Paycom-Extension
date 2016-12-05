@@ -31,7 +31,7 @@ if(url === login_url) {
 			// Submit form
 			$("#btnSubmit").click();	
 		}
-		updateStatus("signed out");	
+		//updateStatus("signed out");	
 
 	});	
 }
