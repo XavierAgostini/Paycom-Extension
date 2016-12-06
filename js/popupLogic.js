@@ -118,12 +118,12 @@ chrome.runtime.onMessage.addListener(
     if(request.updateStatus) {
     	var state = request.updateStatus;
     	//do something
-    	console.log("state: " + state);
-    	if(state === "signed in") {
-			dummySignIn();
-    	} else if(state === "signed out") {
-			dummySignOut();
-    	}
+   //  	console.log("state: " + state);
+   //  	if(state === "signed in") {
+			// dummySignIn();
+   //  	} else if(state === "signed out") {
+			// dummySignOut();
+   //  	}
     	updateClockPage();
     }
    
