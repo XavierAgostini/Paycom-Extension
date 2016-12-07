@@ -135,7 +135,7 @@ function updateClockPage() {
 			loginStatus = JSON.parse(result.loginStatus);
 			
 			var logedIn = loginStatus.signedIn ? "In" : "Out";
-			var timeIn = loginStatus.timeIn;
+			var timeIn = loginStatus.signedIn ? loginStatus.timeIn : "N/A";
 			var timeOut = loginStatus.timeOut == "" ? moment().format("hh:mm A") : loginStatus.timeOut;
 			
 			var roundedTime = roundedTimeWorked(timeIn, timeOut);
@@ -156,23 +156,23 @@ function updateClockPage() {
 }
 
 
-function dummySignIn() {
+// function dummySignIn() {
 
-	loginStatus.signedIn = true;
-	loginStatus.timeIn = "8:00 AM";
-	loginStatus.timeOut = "";
-	chrome.storage.sync.set( {"loginStatus": JSON.stringify(loginStatus)}, function() {});
+// 	loginStatus.signedIn = true;
+// 	loginStatus.timeIn = "8:00 AM";
+// 	loginStatus.timeOut = "";
+// 	chrome.storage.sync.set( {"loginStatus": JSON.stringify(loginStatus)}, function() {});
 	
 
-}
+// }
 
-function dummySignOut() {
-	loginStatus.signedIn = false;
-	loginStatus.timeIn = "8:00 AM";
-	loginStatus.timeOut = moment().format("hh:mm a");
-	chrome.storage.sync.set( {"loginStatus": JSON.stringify(loginStatus)}, function() {});
+// function dummySignOut() {
+// 	loginStatus.signedIn = false;
+// 	loginStatus.timeIn = "8:00 AM";
+// 	loginStatus.timeOut = moment().format("hh:mm a");
+// 	chrome.storage.sync.set( {"loginStatus": JSON.stringify(loginStatus)}, function() {});
 
-}
+// }
 
 
 /* Clock funciontality */
