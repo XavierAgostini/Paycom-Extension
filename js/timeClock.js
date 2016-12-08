@@ -51,12 +51,15 @@ $("#cmdpunchid").on("click", function() {
 });
 $("#cmdpunchod").on("click", function() {
 	chrome.storage.sync.get(["loginStatus"], function(result) {
-		var loginStatus = {}
-		loginStatus = result.loginStatus;
-		loginStatus.signedIn = false;
-		loginStatus.timeOut = moment.format("hh:mm a");
-		chrome.storage.sync.set( {"loginStatus": JSON.stringify(loginStatus)}, function() {});
-		updateStatus("signed out");
+		if(result.loginStatus) {
+			var loginStatus = result.loginStatus;
+			loginStatus.signedIn = false;
+			loginStatus.timeOut = moment().format("hh:mm a");
+			chrome.storage.sync.set( {"loginStatus": JSON.stringify(loginStatus)}, function() {});
+			updateStatus("signed out");
+		}
+		
+		
 	});
 });
 
