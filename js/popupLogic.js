@@ -4,6 +4,9 @@ updateInfo();
 // Update clock page on popup open
 updateClockPage();
 
+// update settings on popup open
+updateSettings();
+
 // encryption salt
 var my_salt = "salty";
 
@@ -60,18 +63,7 @@ $("#loginForm").submit(function(e) {
 });
 
 $('input[type="checkbox"]').on('change', function() {
-	var switchStates = {};
-	$('.switch input[type="checkbox').each(function() {
-		var id = "#" + $(this).attr('id');
-		var state = $(this).is(":checked");
-		switchStates[id] = state;
-		if(id == "#showClockSwitch") {
-			if(state) $("#clock").hide();
-			else $("#clock").show();
-		}
-	});
-	chrome.storage.sync.set( {"appSettings": JSON.stringify(switchStates)}, function() {});
-
+	updateSettings();
 });
 
 $("#sourceCode a").click(function() {
@@ -112,6 +104,20 @@ function updateInfo() {
 	});	
 }
 
+function updateSettings() {
+	var switchStates = {};
+	$('.switch input[type="checkbox').each(function() {
+		var id = "#" + $(this).attr('id');
+		var state = $(this).is(":checked");
+		switchStates[id] = state;
+		if(id == "#showClockSwitch") {
+			if(state) $("#clock").hide();
+			else $("#clock").show();
+		}
+	});
+	chrome.storage.sync.set( {"appSettings": JSON.stringify(switchStates)}, function() {});
+}
+
 // Message listener for communication between popup and content script
 chrome.runtime.onMessage.addListener(
   function(request) {
@@ -138,8 +144,8 @@ function updateClockPage() {
 			var timeIn = loginStatus.signedIn ? loginStatus.timeIn : "N/A";
 			var timeOut = loginStatus.timeOut == "" ? moment().format("hh:mm A") : loginStatus.timeOut;
 			
-			var roundedTime = roundedTimeWorked(timeIn, timeOut);
-			var realTime = realTimeWorked(timeIn, timeOut);
+			var roundedTime = loginStatus.signedIn ? roundedTimeWorked(timeIn, timeOut) : "N/A";
+			var realTime = loginStatus.signedIn ? realTimeWorked(timeIn, timeOut) : "N/A";
 			var interval = loginStatus.signedIn ? nextInterval() : "N/A";
 			
 			$("#timeClock").text(roundedTime);
