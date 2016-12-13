@@ -71,10 +71,34 @@ if(url.includes(timesheet_url)) {
 	if(punchStatus != "Current Status: IN DAY") {
 		$("cmdpunchid").click();
 	}
-	updateTime();
+	updateTimeCLock();
 
 }
+function updateTimeCLock() {
+	chrome.storage.sync.get(["loginStatus"], function(result) {
+		if(result.loginStatus) {
+			loginStatus = JSON.parse(result.loginStatus);
+
+			var timeIn = loginStatus.signedIn ? loginStatus.timeIn : "N/A";
+			var timeOut = loginStatus.timeOut == "" ? moment().format("hh:mm A") : loginStatus.timeOut;
+			
+			var roundedTime = loginStatus.signedIn ? roundedTimeWorked(timeIn, timeOut) : "N/A";
+			var realTime = loginStatus.signedIn ? realTimeWorked(timeIn, timeOut) : "N/A";
+			var interval = loginStatus.signedIn ? nextInterval() : "N/A";
+			//Add in time worked to be underneath the clock
+
+			var updatedClock = '<div class="customClock formGroup" >Total Time Worked: ' + realTime +'</div>\
+						<div class="customClock formGroup" >Rounded Time Worked: '+ roundedTime +'</div>\
+						<div class="customClock formGroup" >Next 15 Min Interval: '+ interval +' minutes</div>';
+			$("#mywebclock").parent().append(updatedClock);
+
+			var style = { color: "black", fontSize: "18px", textAlign: "left" };
+			$(".customClock").css(style);
+		}
+	});
+}
 function updateTime() {
+
 	// Get todaay's sign in time
 	var timeIn = $(".timeClockTable:first-child .float-right").text();
 	// Get current time
