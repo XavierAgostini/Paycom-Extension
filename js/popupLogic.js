@@ -4,9 +4,6 @@ updateInfo();
 // Update clock page on popup open
 updateClockPage();
 
-// update settings on popup open
-updateSettings();
-
 // encryption salt
 var my_salt = "salty";
 

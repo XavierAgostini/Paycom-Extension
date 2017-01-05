@@ -17,8 +17,8 @@ var port = chrome.extension.connect({name: "popup"});
 if(url === login_url) {
 	
 	chrome.storage.sync.get(["loginInfo", "appSettings"], function(result) {
-		var appSettings = JSON.parse(result.appSettings);
-		var autoLogin = appSettings["#autoLoginSwitch"];
+		var appSettings = JSON.parse(result.appSettings) || null;
+		var autoLogin = appSettings["#autoLoginSwitch"] || null;
 		if(!autoLogin) {
 			var loginInfo = JSON.parse(CryptoJS.AES.decrypt(result.loginInfo, my_salt).toString(CryptoJS.enc.Utf8));//JSON.parse(result.loginInfo);
 			var my_username = loginInfo.userID;
