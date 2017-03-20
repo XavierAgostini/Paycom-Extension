@@ -153,3 +153,8 @@ function nextInterval() {
 	var interval = minutes <= 5 ? 6 - minutes : 15 - minutes + 6;
 	return interval
 }
+function nextT(time) {
+	var minutes = moment(time).minutes() % 15;
+	var interval = minutes <= 5 ? 6 - minutes : 15 - minutes + 6;
+	return interval
+}

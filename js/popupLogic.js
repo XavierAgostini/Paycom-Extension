@@ -170,7 +170,7 @@ function roundedTime(time) {
 	var baseMins = Math.floor(minutes/15)*15;
 	var interval = minutes%15;
 
-	if(interval < 5) {
+	if(interval <= 5) {
 		minutes = baseMins;
 	} else {
 		minutes = baseMins + 15;
@@ -185,3 +185,8 @@ function roundedTimeWorked(timeIn, timeOut) {
 	var roundedTimeWorked = moment.utc(moment(realOut, "hh:mm A").diff(moment(realIn,"hh:mm A"))).format("HH:mm");
 	return roundedTimeWorked;
 } 
+function nextT(time) {
+	var minutes = moment(time, "hh:mm A").minutes() % 15;
+	var interval = minutes <= 5 ? 6 - minutes : 15 - minutes + 6;
+	return interval
+}
