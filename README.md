@@ -16,12 +16,15 @@
 1. Click on extension to open pop-up
 
   ![alt tag](/images/popup1.png)
+
 2. Click "Update Login Info" and add in login details
 
   ![alt tag](/images/popup2.png)
+
 3. Turn on 'Autologin' which will enable one click login. Turn on 'Show Clock' to show your time clock in the extension!
 
   ![alt tag](/images/popup4.png)
+  
 4. Click on 'Time Details' to view a more detailed version of your time clock. View your current login status, time worked, rounded time worked, and time to the next rounded 15 minute interval!
 
 ### Features:
