@@ -120,16 +120,8 @@ chrome.runtime.onMessage.addListener(
   function(request) {
     if(request.updateStatus) {
     	var state = request.updateStatus;
-    	//do something
-   //  	console.log("state: " + state);
-   //  	if(state === "signed in") {
-			// dummySignIn();
-   //  	} else if(state === "signed out") {
-			// dummySignOut();
-   //  	}
     	updateClockPage();
     }
-   
  });
 
 function updateClockPage() {
@@ -158,26 +150,6 @@ function updateClockPage() {
 	});
 }
 
-
-// function dummySignIn() {
-
-// 	loginStatus.signedIn = true;
-// 	loginStatus.timeIn = "8:00 AM";
-// 	loginStatus.timeOut = "";
-// 	chrome.storage.sync.set( {"loginStatus": JSON.stringify(loginStatus)}, function() {});
-	
-
-// }
-
-// function dummySignOut() {
-// 	loginStatus.signedIn = false;
-// 	loginStatus.timeIn = "8:00 AM";
-// 	loginStatus.timeOut = moment().format("hh:mm a");
-// 	chrome.storage.sync.set( {"loginStatus": JSON.stringify(loginStatus)}, function() {});
-
-// }
-
-
 /* Clock funciontality */
 
 function realTimeWorked(timeIn, timeOut) {
@@ -187,7 +159,7 @@ function realTimeWorked(timeIn, timeOut) {
 
 function nextInterval() {
 	var minutes = moment().minutes() % 15;
-	var interval = minutes < 5 ? 5 - minutes : 15 - minutes + 5;
+	var interval = minutes <= 5 ? 6 - minutes : 15 - minutes + 6;
 	console.log("next interval: " + minutes);
 	return interval
 }
@@ -198,7 +170,7 @@ function roundedTime(time) {
 	var baseMins = Math.floor(minutes/15)*15;
 	var interval = minutes%15;
 
-	if(interval <= 5) {
+	if(interval < 5) {
 		minutes = baseMins;
 	} else {
 		minutes = baseMins + 15;
