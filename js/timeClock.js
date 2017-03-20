@@ -150,6 +150,6 @@ function roundedTimeWorked(timeIn, timeOut) {
 
 function nextInterval() {
 	var minutes = moment().minutes() % 15;
-	var interval = minutes <= 5 ? 6 - minutes : 15 - minutes + 5;
+	var interval = minutes <= 5 ? 6 - minutes : 15 - minutes + 6;
 	return interval
 }
