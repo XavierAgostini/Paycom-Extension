@@ -1,7 +1,7 @@
-#Paycom Login Chrome Extension 
+# Paycom Login Chrome Extension 
 
 
-###To Install:
+### To Install:
 
 1. Download project as zip file
 2. On chrome navigate to "chrome://extensions"
@@ -11,7 +11,7 @@
 6. Extension should now appear in chrome tool bar
 7. Click on Paycom extension icon in tool bar
 
-###To login: 
+### To login: 
 
 1. Click on extension to open pop-up
 
@@ -24,7 +24,7 @@
   ![alt tag](/images/popup4.png)
 4. Click on 'Time Details' to view a more detailed version of your time clock. View your current login status, time worked, rounded time worked, and time to the next rounded 15 minute interval!
 
-###Features:
+### Features:
 
 1. Autologin to paycom
 2. Login details are encrypted, you can change the salt message in login-form.js and timeClock.js 
@@ -34,7 +34,7 @@
 
 ![alt tag](/images/extension-pic-3.png)
 
-###Future Updates:
+### Future Updates:
 
 1. Add in total time worked in the current week
 2. Take into account multiple signins/outs per day
@@ -42,7 +42,7 @@
 4. Add in alarm to notify user when 9 hour work period is about to be over.
 5. Autologin on popup modal when session timesout.
 
-###Collaboration:
+### Collaboration:
 
 1. Please suggest improvements and any bugs
 2. Make pull requests for any changes you have made
