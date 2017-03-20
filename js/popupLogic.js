@@ -159,7 +159,7 @@ function realTimeWorked(timeIn, timeOut) {
 
 function nextInterval() {
 	var minutes = moment().minutes() % 15;
-	var interval = minutes <= 5 ? 6 - minutes : 15 - minutes + 6;
+	var interval = minutes <= 5 ? 6 - minutes : 15 - minutes + 5;
 	console.log("next interval: " + minutes);
 	return interval
 }
