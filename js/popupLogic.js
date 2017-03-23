@@ -59,6 +59,18 @@ $("#loginForm").submit(function(e) {
 	}, 500);
 });
 
+$("#punchinForm").submit(function(e) {
+	e.preventDefault();
+	var timeIn = $('input[name="timeIn"]').val();
+	var loginStatus = {
+    	signedIn: true,
+    	timeIn: moment(timeIn, "hh:mm a").format("hh:mm a"),
+    	timeOut: ""
+    };
+	chrome.storage.sync.set( {"loginStatus": JSON.stringify(loginStatus)}, function() {});
+	updateClockPage();
+});
+
 $('input[type="checkbox"]').on('change', function() {
 	updateSettings();
 });
@@ -92,11 +104,11 @@ function updateInfo() {
 				$(setting).attr("checked", appSettings[setting]);
 			}
 			if(!appSettings["#showClockSwitch"]) {
-				console.log('working');
 				$("#clock").show();
 			} else {
 				$("#clock").hide();
 			}
+			
 		}
 	});	
 }
@@ -144,8 +156,7 @@ function updateClockPage() {
 			$("#roundedTime").text(roundedTime);
 			$("#nextInterval").text(interval);
 
-
-			
+			loginStatus.signedIn ? $("#punchinArea").hide() : $("#punchinArea").show();	
 		}
 	});
 }

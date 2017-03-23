@@ -58,7 +58,20 @@
 					</div>
 				</div>
 			</div>
-			
+
+			<div class="row" id="punchinArea">	
+				<div class="col-md-8 col-md-offset-2">	
+					<form id="punchinForm" class="form-inline">
+						<div class="form-group">
+							<label for="timeIn">Time In:</label>
+							<input type="text" name="timeIn" class="form-control" placeholder="09:00 AM"/>	
+							<input type="submit" class="btn btn-info" id="punchBtn" value="Punch In">	
+						</div>				
+					</form>
+				</div>
+				<hr>
+			</div>
+
 			<div id="settingsPage" class="page">
 				<div class="row">
 					<div class="col-md-8 col-md-offset-2">
@@ -75,17 +88,11 @@
 								<input type="checkbox" id="showClockSwitch">
 								<div class="slider"></div>
 							</label>
-						</div>
-						<!-- <div class="setting-line">
-							<span class="settings-label">Alarm</span>
-							<label class="switch">
-								<input type="checkbox" id="alarmSwitch">
-								<div class="slider"></div>
-							</label>
-						</div> -->
+						</div>											
 					</div>
 				</div>
 				<hr>
+				
 				<div class="row">	
 					<div class="col-md-8 col-md-offset-2">
 						<div id="updateAlert" class="alert alert-success">Login Info Updated!</div>

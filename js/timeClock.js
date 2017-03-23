@@ -5,8 +5,8 @@ var url = window.location.href;
 
 var login_url = "https://www.paycomonline.net/v4/ee/ee-login.php";
 var menu_url = "https://www.paycomonline.net/v4/ee/ee-menu.php";
-var timesheet_url = "https://www.paycomonline.net/v4/ee/ee-tawebclock.php?clockid="
-
+var timeClock_url = "https://www.paycomonline.net/v4/ee/ee-tawebclock.php?clockid="
+var timeSheet_url = "https://www.paycomonline.net/v4/ee/ee-tawebsheet.php?clockid=" 
 // encryption salt
 var my_salt = "salty";
 
@@ -35,10 +35,18 @@ if(url === login_url) {
 
 	});	
 }
-// Send message to popup
-function updateStatus(status) {
-	chrome.runtime.sendMessage({updateStatus: status});	
+// If the browser is open to the timeclock URL
+if(url.includes(timeClock_url)) {
+	var punchStatus = $(".punchStatus").val();
+
+	// If user is not signed in
+	if(punchStatus != "Current Status: IN DAY") {
+		$("cmdpunchid").click();
+	}
+	updateTimeCLock();
+
 }
+
 
 $("#cmdpunchid").on("click", function() {
     var loginStatus = {
@@ -57,23 +65,15 @@ $("#cmdpunchod").on("click", function() {
 			loginStatus.timeOut = moment().format("hh:mm a");
 			chrome.storage.sync.set( {"loginStatus": JSON.stringify(loginStatus)}, function() {});
 			updateStatus("signed out");
-		}
-		
-		
+		}		
 	});
 });
 
-// If the browser is open to the timesheet URL
-if(url.includes(timesheet_url)) {
-	var punchStatus = $(".punchStatus").val();
-
-	// If user is not signed in
-	if(punchStatus != "Current Status: IN DAY") {
-		$("cmdpunchid").click();
-	}
-	updateTimeCLock();
-
+// Send message to popup
+function updateStatus(status) {
+	chrome.runtime.sendMessage({updateStatus: status});	
 }
+
 function updateTimeCLock() {
 	chrome.storage.sync.get(["loginStatus"], function(result) {
 		if(result.loginStatus) {

@@ -76,6 +76,13 @@ input:checked + .slider:before {
 	-ms-transform: translateX(100px);
 	transform: translateX(66px);
 }
+#punchinForm div label {
+	display: inline-block;
+}
+#punchinForm div input[name="timeIn"] {
+	display: inline-block !important;
+	width: 100px;
+}
 #sourceCode {
 	text-align: center;
 }
