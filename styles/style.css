@@ -83,6 +83,14 @@ input:checked + .slider:before {
 	display: inline-block !important;
 	width: 100px;
 }
+
+#punchoutForm div label {
+	display: inline-block;
+}
+#punchoutForm div input[name="timeOut"] {
+	display: inline-block !important;
+	width: 100px;
+}
 #sourceCode {
 	text-align: center;
 }

@@ -11,7 +11,6 @@ var my_salt = "salty";
 var loginStatus = {};
 
 
-
 // Open up paycom login page
 $("#loginBtn").click(function() {
 	chrome.tabs.update({url: "https://www.paycomonline.net/v4/ee/ee-login.php"});
@@ -62,12 +61,25 @@ $("#loginForm").submit(function(e) {
 $("#punchinForm").submit(function(e) {
 	e.preventDefault();
 	var timeIn = $('input[name="timeIn"]').val();
-	var loginStatus = {
+	loginStatus = {
     	signedIn: true,
     	timeIn: moment(timeIn, "hh:mm a").format("hh:mm a"),
     	timeOut: ""
     };
 	chrome.storage.sync.set( {"loginStatus": JSON.stringify(loginStatus)}, function() {});
+	updateClockPage();
+});
+
+$("#punchoutForm").submit(function(e) {
+	e.preventDefault();
+	var timeOut = $('input[name="timeOut"]').val();
+	chrome.storage.sync.get(["loginStatus"], function(result) {
+		if(result.loginStatus) {
+			loginStatus = JSON.parse(result.loginStatus);
+			loginStatus.signedIn = false;
+			loginStatus.timeOut = moment(timeOut, "hh:mm a").format("hh:mm a");
+		}
+	});
 	updateClockPage();
 });
 
@@ -156,7 +168,13 @@ function updateClockPage() {
 			$("#roundedTime").text(roundedTime);
 			$("#nextInterval").text(interval);
 
-			loginStatus.signedIn ? $("#punchinArea").hide() : $("#punchinArea").show();	
+			if (loginStatus.signedIn) {
+				$("#punchinArea").hide();
+				$("#punchoutArea").show();
+			} else {
+				$("#punchinArea").show();	
+				$("#punchoutArea").hide();
+			}
 		}
 	});
 }
