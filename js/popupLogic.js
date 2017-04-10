@@ -78,9 +78,11 @@ $("#punchoutForm").submit(function(e) {
 			loginStatus = JSON.parse(result.loginStatus);
 			loginStatus.signedIn = false;
 			loginStatus.timeOut = moment(timeOut, "hh:mm a").format("hh:mm a");
+			chrome.storage.sync.set( {"loginStatus": JSON.stringify(loginStatus)}, function() {});
+			updateClockPage();
 		}
 	});
-	updateClockPage();
+	
 });
 
 $('input[type="checkbox"]').on('change', function() {
@@ -131,9 +133,18 @@ function updateSettings() {
 		var id = "#" + $(this).attr('id');
 		var state = $(this).is(":checked");
 		switchStates[id] = state;
-		if(id == "#showClockSwitch") {
+		if (id == "#showClockSwitch") {
 			if(state) $("#clock").hide();
 			else $("#clock").show();
+		}
+		if (id == "#showManualSwitch") {
+			if (state) {
+				$("#punch").hide();
+				$("#punch").hide();
+			} else {
+				$("#punch").show();
+				$("#punch").show();
+			}
 		}
 	});
 	chrome.storage.sync.set( {"appSettings": JSON.stringify(switchStates)}, function() {});
