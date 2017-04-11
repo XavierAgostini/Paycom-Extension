@@ -122,6 +122,11 @@ function updateInfo() {
 			} else {
 				$("#clock").hide();
 			}
+			if(!appSettings["#showManualSwitch"]) {
+				$("#punchArea").show();
+			} else {
+				$("#punchArea").hide();
+			}
 			
 		}
 	});	
@@ -138,13 +143,8 @@ function updateSettings() {
 			else $("#clock").show();
 		}
 		if (id == "#showManualSwitch") {
-			if (state) {
-				$("#punch").hide();
-				$("#punch").hide();
-			} else {
-				$("#punch").show();
-				$("#punch").show();
-			}
+			if (state) $("#punchArea").hide();
+			else $("#punchArea").show();
 		}
 	});
 	chrome.storage.sync.set( {"appSettings": JSON.stringify(switchStates)}, function() {});
@@ -180,11 +180,11 @@ function updateClockPage() {
 			$("#nextInterval").text(interval);
 
 			if (loginStatus.signedIn) {
-				$("#punchinArea").hide();
-				$("#punchoutArea").show();
+				$("#punchinForm").hide();
+				$("#punchoutForm").show();
 			} else {
-				$("#punchinArea").show();	
-				$("#punchoutArea").hide();
+				$("#punchinForm").show();	
+				$("#punchoutForm").hide();
 			}
 		}
 	});
