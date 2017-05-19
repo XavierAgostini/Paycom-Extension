@@ -187,6 +187,10 @@ function updateClockPage() {
 				$("#punchoutForm").hide();
 			}
 		}
+		else {
+			$("#punchinForm").show();	
+			$("#punchoutForm").hide();
+		}
 	});
 }
 

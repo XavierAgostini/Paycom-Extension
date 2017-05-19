@@ -24,14 +24,32 @@
 			<hr>
 			<div id="clock">
 				<div class="row">
-					
 					<div class="col-md-8 col-md-offset-2">
 						<div id="timeClock"></div>
 					</div>
-					<hr>
 				</div>
 			</div>
-			
+			<div id="punchArea">
+				<div class="row">	
+					<div class="col-md-8 col-md-offset-2">	
+						<form id="punchinForm" class="form-inline">
+							<div class="form-group">
+								<label for="timeIn">Time In:</label>
+								<input type="text" name="timeIn" class="form-control" placeholder="09:00 AM"/>	
+								<input type="submit" class="btn btn-info" id="punchinBtn" value="Punch In">	
+							</div>				
+						</form>
+						<form id="punchoutForm" class="form-inline">
+							<div class="form-group">
+								<label for="timeOut">Time Out:</label>
+								<input type="text" name="timeOut" class="form-control" placeholder="09:00 AM"/>	
+								<input type="submit" class="btn btn-info" id="punchoutBtn" value="Punch Out">	
+							</div>				
+						</form>
+						<hr>
+					</div>
+				</div>
+			</div>
 			<div id="timePage" class="page">
 				<div class="row">
 					<div class="col-md-8 col-md-offset-2">
@@ -52,35 +70,13 @@
 							<span id="roundedTime">5 Hours</span>
 						</div>
 						<div class="timeInfo">
-							<span>Time to next 15 minute interval: </span>
+							<span>Next 15 minute round up in: </span>
 							<span id="nextInterval">5 mins</span>
 						</div>
 					</div>
 				</div>
 			</div>
-			
-			<div id="punchArea">
-				<div class="row">	
-					<div class="col-md-8 col-md-offset-2">	
-						<form id="punchinForm" class="form-inline">
-							<div class="form-group">
-								<label for="timeIn">Time In:</label>
-								<input type="text" name="timeIn" class="form-control" placeholder="09:00 AM"/>	
-								<input type="submit" class="btn btn-info" id="punchinBtn" value="Punch In">	
-							</div>				
-						</form>
-						<form id="punchoutForm" class="form-inline">
-							<div class="form-group">
-								<label for="timeOut">Time Out:</label>
-								<input type="text" name="timeOut" class="form-control" placeholder="09:00 AM"/>	
-								<input type="submit" class="btn btn-info" id="punchoutBtn" value="Punch Out">	
-							</div>				
-						</form>
-					</div>
-					<hr>
-				</div>
-			</div>
-			
+					
 			<div id="settingsPage" class="page">
 				<div class="row">
 					<div class="col-md-8 col-md-offset-2">
@@ -101,7 +97,7 @@
 						<div class="setting-line">
 							<span class="settings-label">Punch In/Out</span>
 							<label class="switch">
-								<input type="checkbox" id="showManualSwitch">
+								<input type="checkbox" id="showManualSwitch" checked>
 								<div class="slider"></div>
 							</label>
 						</div>										
